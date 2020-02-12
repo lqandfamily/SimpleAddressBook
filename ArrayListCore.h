@@ -76,12 +76,12 @@ ContactInfo **findAll();
  * @param name
  * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
  */
-ContactInfo *findByName(char *name);
+ContactInfo **findByName(char *name);
 
 /**
  * 通过绝对姓名精确查找联系人，用于添加联系人时的唯一性验证
  * @param absoluteName
- * @return 返回符合条件联系人数组的首地址，无则返回NULL
+ * @return 返回符合条件的唯一联系人，无则返回NULL
  */
 ContactInfo *findByAbsoluteName(char *absoluteName);
 
@@ -90,12 +90,12 @@ ContactInfo *findByAbsoluteName(char *absoluteName);
  * @param phoneNum
  * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
  */
-ContactInfo *findByPhoneNum(char *phoneNum);
+ContactInfo **findByPhoneNum(char *phoneNum);
 
 /**
  * 通过绝对h号码精确查找联系人，用于添加联系人时的唯一性验证
  * @param absolutePhoneNum
- * @return 返回符合条件联系人数组的首地址，无则返回NULL
+ * @return 返回符合条件的唯一联系人，无则返回NULL
  */
 ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum);
 
@@ -104,7 +104,7 @@ ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum);
  * @param group
  * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
  */
-ContactInfo *findByGroup(char *group);
+ContactInfo **findByGroup(char *group);
 
 /**
  * 通过id修改姓名

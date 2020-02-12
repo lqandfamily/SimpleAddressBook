@@ -54,12 +54,12 @@ int addByInfo(char *name,char *phoneNum, char *address, char *group){
     if(phoneNum == NULL || strcmp(phoneNum,"") == 0){
         return PHONE_NULL;
     }
-//    if(findByAbsoluteName(name) != NULL){
-//        return NAME_EXIST;
-//    }
-//    if(findByAbsolutePhoneNum(phoneNum) != NULL){
-//        return PHONE_EXIST;
-//    }
+    if(findByAbsoluteName(name) != NULL){
+        return NAME_EXIST;
+    }
+    if(findByAbsolutePhoneNum(phoneNum) != NULL){
+        return PHONE_EXIST;
+    }
     /**
      * 动态申请内存地址
      */
@@ -103,5 +103,35 @@ int del(int id){
 
 ContactInfo **findAll(){
     return contactArr;
+}
+
+ContactInfo **findByName(char *name);
+
+ContactInfo *findByAbsoluteName(char *absoluteName){
+    int i;
+    if(absoluteName == NULL || strcmp(absoluteName,"") == 0){
+        return NULL;
+    }
+    for(i = 0; i <= contactNum; i++){
+        if(strcmp(contactArr[i]->name,absoluteName) == 0){
+            return contactArr[i];
+        }
+    }
+    return NULL;
+}
+
+ContactInfo **findByPhoneNum(char *phoneNum);
+
+ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum){
+    int i;
+    if(absolutePhoneNum == NULL || strcmp(absolutePhoneNum,"") == 0){
+        return NULL;
+    }
+    for(i = 0; i <= contactNum; i++){
+        if(strcmp(contactArr[i]->phoneNum,absolutePhoneNum) == 0){
+            return contactArr[i];
+        }
+    }
+    return NULL;
 }
 
