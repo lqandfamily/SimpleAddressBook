@@ -13,6 +13,8 @@
 #include "ErrorCode.h"
 #include "Config.h"
 
+#define END_ID_CODE -2         //最后一个联系人结束的id标记
+
 typedef struct {
     int id;                 //id，唯一标识，自动生成
     char name[20];          //姓名，唯一
@@ -21,10 +23,7 @@ typedef struct {
     char group[20];         //分组
 } ContactInfo;
 
-//核心联系人数组,使用指针来存储，减少内存开销
-ContactInfo *contactArr[MAX_CONTACT];
-//联系人数量，这里做id
-int contactNum = -1;
+
 
 /**
  * 通过完整的ContactInfo添加联系人
@@ -59,7 +58,7 @@ int del(int id);
  * 查找所有联系人
  * @return 返回所有联系人数组的首地址，无则返回NULL
  */
-ContactInfo *findAll();
+ContactInfo **findAll();
 
 /**
  * 通过姓名模糊查找联系人
