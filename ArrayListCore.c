@@ -169,3 +169,56 @@ ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum) {
     return NULL;
 }
 
+ContactInfo **findByGroup(char *group);
+
+int altName(int id, char *name){
+    if(id <0 || id > contactNum || contactArr[id] == NULL){
+        return ID_NOT_EXIST;
+    }
+    if(name == NULL || strcmp(name,"") == 0){
+        return NAME_NULL;
+    }
+    if(findByAbsoluteName(name) != NULL){
+        return NAME_EXIST;
+    }
+    strcpy(contactArr[id]->name,name);
+    return SUCCESS;
+}
+
+int altPhone(int id, char *phoneNum){
+    if(id <0 || id > contactNum || contactArr[id] == NULL){
+        return ID_NOT_EXIST;
+    }
+    if(phoneNum == NULL || strcmp(phoneNum,"") == 0){
+        return NAME_NULL;
+    }
+    if(findByAbsolutePhoneNum(phoneNum) != NULL){
+        return NAME_EXIST;
+    }
+    strcpy(contactArr[id]->phoneNum,phoneNum);
+    return SUCCESS;
+}
+
+int altAddress(int id, char *address){
+    if(id <0 || id > contactNum || contactArr[id] == NULL){
+        return ID_NOT_EXIST;
+    }
+    if(address == NULL){
+        address = "";
+    }
+    strcpy(contactArr[id]->address,address);
+    return SUCCESS;
+}
+
+int altGroup(int id, char *group){
+    if(id <0 || id > contactNum || contactArr[id] == NULL){
+        return ID_NOT_EXIST;
+    }
+    if(group == NULL){
+        group = "";
+    }
+    strcpy(contactArr[id]->group,group);
+    return SUCCESS;
+}
+
+

@@ -92,12 +92,71 @@ void testFindByNameOrPhone() {
     destroy();
 }
 
+/**
+ * 测试修改姓名和电话
+ */
+void testAltNameOrPhone() {
+    int i;
+    init();
+    addByInfo("bob", "10086", "London", NULL);
+    addByInfo("tom", "10001", "Shanghai", NULL);
+    ContactInfo *findBobInfo = findByAbsoluteName("bob");
+
+    int resultCode = altName(findBobInfo->id, "BOB");
+    altPhone(findBobInfo->id, "1111");
+
+    switch (resultCode) {
+        case ID_NOT_EXIST:
+            printf("ID_NOT_EXIST!\n");
+            break;
+        case NAME_NULL:
+            printf("NAME_NULL!\n");
+            break;
+        case NAME_EXIST:
+            printf("NAME_EXIST!\n");
+            break;
+        default:
+            break;
+    }
+
+    ContactInfo **contacts = findAll();
+    for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
+        printf("%d,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum);
+    }
+    destroy();
+}
+
+/**
+ * 测试修改地址和分组
+ */
+void testAltAddressOrGroup() {
+    int i;
+    init();
+    addByInfo("bob", "10086", "London", NULL);
+    addByInfo("tom", "10001", "Shanghai", NULL);
+    ContactInfo *findBobInfo = findByAbsoluteName("bob");
+
+    int resultCode = altAddress(findBobInfo->id, "Guizhou");
+    altGroup(findBobInfo->id,"friends");
+
+    if (resultCode == ID_NOT_EXIST) {
+        printf("ID_NOT_EXIST!\n");
+    }
+
+    ContactInfo **contacts = findAll();
+    for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
+        printf("%d,%s,%s,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum,contacts[i]->address,contacts[i]->group);
+    }
+    destroy();
+}
 
 int main() {
 //    testAdd();
 //    testDelAndDestroy();
 //     testAddRepeat();
-    testFindByNameOrPhone();
+//    testFindByNameOrPhone();
+//    testAltNameOrPhone();
+    testAltAddressOrGroup();
     return 0;
 }
 
