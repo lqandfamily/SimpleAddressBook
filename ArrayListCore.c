@@ -21,7 +21,7 @@ ContactInfo *getEndContact(){
 
 int destroy(){
     int i;
-    for(i = 0; i < contactNum; i++){
+    for(i = 0; i <= contactNum; i++){
         free(contactArr[i]);
         contactArr[i] = NULL;
     }
@@ -88,12 +88,14 @@ int addByInfo(char *name,char *phoneNum, char *address, char *group){
 
 int del(int id){
     int i;
-    if(id < 0 || id > contactNum - 2){
+    if(id < 0 || id > contactNum ){
         //TODO id不存在时的处理
         return ID_NOT_EXIST;
     }
     //处理到结束ID
-    for(i = id; i < contactNum; i++){
+    free(contactArr[id]);
+    contactArr[id] = NULL;
+    for(i = id; i <= contactNum; i++){
         contactArr[i] = contactArr[i+1];
     }
     return SUCCESS;

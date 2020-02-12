@@ -13,13 +13,27 @@ void testAdd() {
     addByInfo("bob", "10086", "London", NULL);
     addByInfo("tom", "10001", "Shanghai", NULL);
     ContactInfo **contacts = findAll();
-    for(i = 0; contacts[i]->id != END_ID_CODE; i++){
-        printf("%d,%s,%s\n",contacts[i]->id,contacts[i]->name,contacts[i]->phoneNum);
+    for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
+        printf("%d,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum);
     }
 }
 
-int main(){
-    testAdd();
+void testDelAndDestroy() {
+    int i;
+    init();
+    addByInfo("bob", "10086", "London", NULL);
+    addByInfo("tom", "10001", "Shanghai", NULL);
+//    del(0)
+    destroy();
+    ContactInfo **contacts = findAll();
+    for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
+        printf("%d,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum);
+    }
+}
+
+int main() {
+//    testAdd();
+    testDelAndDestroy();
     return 0;
 }
 
