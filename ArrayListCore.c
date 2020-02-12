@@ -169,7 +169,22 @@ ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum) {
     return NULL;
 }
 
-ContactInfo **findByGroup(char *group);
+ContactInfo **findByGroup(char *group){
+    int i, m = 0;
+
+    static ContactInfo *foundContacts[MAX_CONTACT];
+
+    for (i = 0; i <= contactNum; i++) {
+        if (strstr(contactArr[i]->group, group) != NULL) {
+            foundContacts[m++] = contactArr[i];
+        }
+    }
+    if (m == 0) {
+        return NULL;
+    }
+    foundContacts[m] = getEndContact();
+    return foundContacts;
+}
 
 int altName(int id, char *name){
     if(id <0 || id > contactNum || contactArr[id] == NULL){
@@ -204,7 +219,7 @@ int altAddress(int id, char *address){
         return ID_NOT_EXIST;
     }
     if(address == NULL){
-        address = "";
+        return ADDRESS_NULL;
     }
     strcpy(contactArr[id]->address,address);
     return SUCCESS;
@@ -214,8 +229,9 @@ int altGroup(int id, char *group){
     if(id <0 || id > contactNum || contactArr[id] == NULL){
         return ID_NOT_EXIST;
     }
+
     if(group == NULL){
-        group = "";
+        return GROUP_NULL;
     }
     strcpy(contactArr[id]->group,group);
     return SUCCESS;

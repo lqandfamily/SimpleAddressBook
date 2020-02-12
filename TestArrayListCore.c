@@ -31,7 +31,7 @@ void testDelAndDestroy() {
     init();
     addByInfo("bob", "10086", "London", NULL);
     addByInfo("tom", "10001", "Shanghai", NULL);
-//    del(0)
+    del(0);
 //    destroy();
     ContactInfo **contacts = findAll();
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
@@ -137,7 +137,7 @@ void testAltAddressOrGroup() {
     ContactInfo *findBobInfo = findByAbsoluteName("bob");
 
     int resultCode = altAddress(findBobInfo->id, "Guizhou");
-    altGroup(findBobInfo->id,"friends");
+    altGroup(findBobInfo->id, "friends");
 
     if (resultCode == ID_NOT_EXIST) {
         printf("ID_NOT_EXIST!\n");
@@ -145,8 +145,26 @@ void testAltAddressOrGroup() {
 
     ContactInfo **contacts = findAll();
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
-        printf("%d,%s,%s,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum,contacts[i]->address,contacts[i]->group);
+        printf("%d,%s,%s,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
+               contacts[i]->group);
     }
+    destroy();
+}
+
+void testFindByGroup() {
+    int i;
+    init();
+    addByInfo("bobb", "10086", "London", "family");
+    addByInfo("blili", "10001", "Shanghai", "family");
+    addByInfo("tom", "10003", "Shanghai", "friend");
+    addByInfo("fbf", "10002", "Shanghai", "friend");
+
+    printf("findByName>:\n");
+    ContactInfo **contacts = findByGroup("family");
+    for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
+        printf("%d,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum);
+    }
+
     destroy();
 }
 
@@ -157,6 +175,7 @@ int main() {
 //    testFindByNameOrPhone();
 //    testAltNameOrPhone();
     testAltAddressOrGroup();
+//    testFindByGroup();
     return 0;
 }
 

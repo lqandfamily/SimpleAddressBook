@@ -112,6 +112,7 @@ ContactInfo **findByGroup(char *group);
  * @param name 不为NULL或''，且唯一
  * @return NAME_NULL
  *         NAME_EXIST
+ *         ID_NOT_EXIST
  */
 int altName(int id, char *name);
 
@@ -121,6 +122,7 @@ int altName(int id, char *name);
  * @param phoneNum 不为NULL或''，且唯一
  * @return PHONE_NULL
  *         PHONE_EXIST
+ *         ID_NOT_EXIST
  */
 int altPhone(int id, char *phoneNum);
 
@@ -128,7 +130,8 @@ int altPhone(int id, char *phoneNum);
  * 通过id修改地址
  * @param id
  * @param address 不为NULL
- * @return NULL_POINT
+ * @return ID_NOT_EXIST
+ *         ADDRESS_NULL
  */
 int altAddress(int id, char *address);
 
@@ -136,7 +139,8 @@ int altAddress(int id, char *address);
  * 通过id修改分组
  * @param id
  * @param address 不为NULL或''
- * @return GROUP_NULL
+ * @return ID_NOT_EXIST
+ *         GROUP_NULL
  */
 int altGroup(int id, char *group);
 
