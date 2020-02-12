@@ -23,7 +23,18 @@ typedef struct {
     char group[20];         //分组
 } ContactInfo;
 
+/**
+ * 销毁核心数组
+ * @return ERROR
+ */
+int destroy();
 
+/**
+ * 初始化
+ * @warning 该方法只能在初始化时调用一次，否则返回ERROR
+ * @return ERROR
+ */
+int init();
 
 /**
  * 通过完整的ContactInfo添加联系人

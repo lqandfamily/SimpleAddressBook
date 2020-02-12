@@ -19,6 +19,23 @@ ContactInfo *getEndContact(){
     return endContact;
 }
 
+int destroy(){
+    int i;
+    for(i = 0; i < contactNum; i++){
+        free(contactArr[i]);
+        contactArr[i] = NULL;
+    }
+    return SUCCESS;
+}
+
+int init(){
+    if(contactNum != -1){
+        return ERROR;
+    }
+    contactArr[0] = getEndContact();
+    return SUCCESS;
+}
+
 int add(ContactInfo *contactInfo){
     contactNum++;
     if(contactNum >= MAX_CONTACT){

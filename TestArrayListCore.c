@@ -9,10 +9,12 @@
 
 void testAdd() {
     int i;
+    init();
     addByInfo("bob", "10086", "London", NULL);
+    addByInfo("tom", "10001", "Shanghai", NULL);
     ContactInfo **contacts = findAll();
     for(i = 0; contacts[i]->id != END_ID_CODE; i++){
-        printf("id=%d, name=%s\n",contacts[i]->id,contacts[i]->name);
+        printf("%d,%s,%s\n",contacts[i]->id,contacts[i]->name,contacts[i]->phoneNum);
     }
 }
 
