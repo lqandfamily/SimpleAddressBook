@@ -11,34 +11,34 @@ ContactInfo *endContact = NULL;
 /**
  * 结束联系人标志
  */
-ContactInfo *getEndContact(){
-    if(endContact == NULL){
+ContactInfo *getEndContact() {
+    if (endContact == NULL) {
         endContact = malloc(sizeof(ContactInfo));
         endContact->id = END_ID_CODE;
     }
     return endContact;
 }
 
-int destroy(){
+int destroy() {
     int i;
-    for(i = 0; i <= contactNum; i++){
+    for (i = 0; i <= contactNum; i++) {
         free(contactArr[i]);
         contactArr[i] = NULL;
     }
     return SUCCESS;
 }
 
-int init(){
-    if(contactNum != -1){
+int init() {
+    if (contactNum != -1) {
         return ERROR;
     }
     contactArr[0] = getEndContact();
     return SUCCESS;
 }
 
-int add(ContactInfo *contactInfo){
+int add(ContactInfo *contactInfo) {
     contactNum++;
-    if(contactNum >= MAX_CONTACT){
+    if (contactNum >= MAX_CONTACT) {
         return RUN_OUT;
     }
     contactArr[contactNum] = contactInfo;
@@ -47,88 +47,122 @@ int add(ContactInfo *contactInfo){
     return SUCCESS;
 }
 
-int addByInfo(char *name,char *phoneNum, char *address, char *group){
-    if(name == NULL || strcmp(name,"") == 0){
+int addByInfo(char *name, char *phoneNum, char *address, char *group) {
+    if (name == NULL || strcmp(name, "") == 0) {
         return NAME_NULL;
     }
-    if(phoneNum == NULL || strcmp(phoneNum,"") == 0){
+    if (phoneNum == NULL || strcmp(phoneNum, "") == 0) {
         return PHONE_NULL;
     }
-    if(findByAbsoluteName(name) != NULL){
+    if (findByAbsoluteName(name) != NULL) {
         return NAME_EXIST;
     }
-    if(findByAbsolutePhoneNum(phoneNum) != NULL){
+    if (findByAbsolutePhoneNum(phoneNum) != NULL) {
         return PHONE_EXIST;
     }
     /**
      * 动态申请内存地址
      */
     ContactInfo *newContact = malloc(sizeof(ContactInfo));
-    if(newContact == NULL){
+    if (newContact == NULL) {
         return MALLOC_ERROR;
     }
     newContact->id = contactNum + 1;
-    strcpy(newContact->name,name);
-    strcpy(newContact->phoneNum,phoneNum);
-    if(address == NULL){
+    strcpy(newContact->name, name);
+    strcpy(newContact->phoneNum, phoneNum);
+    if (address == NULL) {
         address = "";
     }
-    if(group == NULL){
+    if (group == NULL) {
         group = "";
     }
-    strcpy(newContact->address,address);
-    strcpy(newContact->group,group);
+    strcpy(newContact->address, address);
+    strcpy(newContact->group, group);
 
-    if(add(newContact) == RUN_OUT){
+    if (add(newContact) == RUN_OUT) {
         return RUN_OUT;
     }
 
     return SUCCESS;
 }
 
-int del(int id){
+int del(int id) {
     int i;
-    if(id < 0 || id > contactNum ){
+    if (id < 0 || id > contactNum) {
         //TODO id不存在时的处理
         return ID_NOT_EXIST;
     }
     //处理到结束ID
     free(contactArr[id]);
     contactArr[id] = NULL;
-    for(i = id; i <= contactNum; i++){
-        contactArr[i] = contactArr[i+1];
+    for (i = id; i <= contactNum; i++) {
+        contactArr[i] = contactArr[i + 1];
     }
     return SUCCESS;
 }
 
-ContactInfo **findAll(){
+ContactInfo **findAll() {
     return contactArr;
 }
 
-ContactInfo **findByName(char *name);
+ContactInfo **findByName(char *name) {
+    int i, m = 0;
+    /**
+     * 另外，C 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量
+     */
+    static ContactInfo *foundContacts[MAX_CONTACT];
 
-ContactInfo *findByAbsoluteName(char *absoluteName){
-    int i;
-    if(absoluteName == NULL || strcmp(absoluteName,"") == 0){
+    for (i = 0; i <= contactNum; i++) {
+        if (strstr(contactArr[i]->name, name) != NULL) {
+            foundContacts[m++] = contactArr[i];
+        }
+    }
+    if (m == 0) {
         return NULL;
     }
-    for(i = 0; i <= contactNum; i++){
-        if(strcmp(contactArr[i]->name,absoluteName) == 0){
+    foundContacts[m] = getEndContact();
+    return foundContacts;
+}
+
+ContactInfo *findByAbsoluteName(char *absoluteName) {
+    int i;
+    if (absoluteName == NULL || strcmp(absoluteName, "") == 0) {
+        return NULL;
+    }
+    for (i = 0; i <= contactNum; i++) {
+        if (strcmp(contactArr[i]->name, absoluteName) == 0) {
             return contactArr[i];
         }
     }
     return NULL;
 }
 
-ContactInfo **findByPhoneNum(char *phoneNum);
+ContactInfo **findByPhoneNum(char *phoneNum){
+    int i, m = 0;
+    /**
+     * 另外，C 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量
+     */
+    static ContactInfo *foundContacts[MAX_CONTACT];
 
-ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum){
-    int i;
-    if(absolutePhoneNum == NULL || strcmp(absolutePhoneNum,"") == 0){
+    for (i = 0; i <= contactNum; i++) {
+        if (strstr(contactArr[i]->phoneNum, phoneNum) != NULL) {
+            foundContacts[m++] = contactArr[i];
+        }
+    }
+    if (m == 0) {
         return NULL;
     }
-    for(i = 0; i <= contactNum; i++){
-        if(strcmp(contactArr[i]->phoneNum,absolutePhoneNum) == 0){
+    foundContacts[m] = getEndContact();
+    return foundContacts;
+}
+
+ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum) {
+    int i;
+    if (absolutePhoneNum == NULL || strcmp(absolutePhoneNum, "") == 0) {
+        return NULL;
+    }
+    for (i = 0; i <= contactNum; i++) {
+        if (strcmp(contactArr[i]->phoneNum, absolutePhoneNum) == 0) {
             return contactArr[i];
         }
     }
