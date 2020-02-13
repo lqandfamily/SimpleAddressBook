@@ -178,10 +178,16 @@ void testAddAndFindAllGroup() {
     addByInfo("bob", "10086", "London", "friend");
     addByInfo("tom", "10001", "Shanghai", "friend");
     addByInfo("alice", "100011", "Zunyi", "family");
+
     ContactInfo **contacts = findAll();
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
         printf("%d,%s,%s,%s,%d,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
                contacts[i]->groupId,getGroupName(contacts[i]->groupId));
+    }
+
+    Group **groups = findGroups();
+    for(i = 0; groups[i]->id != END_ID_CODE; i++){
+        printf("%d,%s\n",groups[i]->id,groups[i]->group);
     }
 
     destroy();
@@ -213,8 +219,8 @@ int main() {
 //    testAltNameOrPhone();
 //    testAltAddressOrGroup();
 //    testFindByGroup();
-//    testAddAndFindAllGroup();
-testAddGroup();
+    testAddAndFindAllGroup();
+//testAddGroup();
     return 0;
 }
 
