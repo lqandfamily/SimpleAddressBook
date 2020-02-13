@@ -4,7 +4,7 @@ int openFile(char *fileUrl, char *mode, FILE **dbFile);
 
 int closeFile(FILE *dbFile);
 
-int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
+int readFromDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
     FILE *db;
     int i, flag;
     if (openFile(fileUrl, "r", &db) != SUCCESS) {
@@ -46,11 +46,11 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
     }
 }
 
-int writeContactsToDB(char *fileUrl, ContactInfo *contactArr[]) {
+int writeToDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
     int i;
     FILE *db = NULL;
 
-    if (openFile(fileUrl, "a", &db) != SUCCESS) {
+    if (openFile(fileUrl, "w", &db) != SUCCESS) {
         return FILE_OPEN_ERROR;
     }
 
@@ -67,20 +67,6 @@ int writeContactsToDB(char *fileUrl, ContactInfo *contactArr[]) {
     if (closeFile(db) == FILE_CLOSE_ERROR) {
         return FILE_CLOSE_ERROR;
     }
-    return SUCCESS;
-}
-
-int delContactInDB(char *fileUrl, int id) {
-    FILE *db = NULL;
-
-    if (openFile(fileUrl, "w+", &db) != SUCCESS) {
-        return FILE_OPEN_ERROR;
-    }
-
-    if (closeFile(db) == FILE_CLOSE_ERROR) {
-        return FILE_CLOSE_ERROR;
-    }
-
     return SUCCESS;
 }
 

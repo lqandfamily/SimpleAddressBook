@@ -13,7 +13,7 @@ void dbTestAdd() {
     ContactInfo **contacts = findAll();
 
 
-    int resultCode = writeContactsToDB(CONTACTS_DB_FILE_URL, contacts);
+    int resultCode = writeToDB(CONTACTS_DB_FILE_URL, contacts,KIND_CONTACT);
     printf("resultCode:%d\n", resultCode);
     destroy();
 }
@@ -23,13 +23,12 @@ void dbTestReadAll() {
     init();
 
     ContactInfo *contacts[MAX_CONTACT];
-    readContactsFromDB(CONTACTS_DB_FILE_URL, contacts);
+    readFromDB(CONTACTS_DB_FILE_URL, contacts,KIND_CONTACT);
 
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
         printf("%d,%s,%s,%s,%d\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
               contacts[i]->groupId);
     }
-
     destroy();
 
 }
