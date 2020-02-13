@@ -39,9 +39,9 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
             return RUN_OUT;
         }
 
-        //此段为调试用代码
-        printf("************%d,%s,%s,%s,%d\n", newContact->id, newContact->name, newContact->phoneNum,
-               newContact->address, newContact->groupId);
+//        //此段为调试用代码
+//        printf("************%d,%s,%s,%s,%d\n", newContact->id, newContact->name, newContact->phoneNum,
+//               newContact->address, newContact->groupId);
 
     }
 }
@@ -61,6 +61,20 @@ int addContactToDB(char *fileUrl, ContactInfo *contact) {
     if (closeFile(db) == FILE_CLOSE_ERROR) {
         return FILE_CLOSE_ERROR;
     }
+    return SUCCESS;
+}
+
+int delContactInDB(char *fileUrl, int id){
+    FILE *db = NULL;
+
+    if (openFile(fileUrl, "w+", &db) != SUCCESS) {
+        return FILE_OPEN_ERROR;
+    }
+
+    if (closeFile(db) == FILE_CLOSE_ERROR) {
+        return FILE_CLOSE_ERROR;
+    }
+
     return SUCCESS;
 }
 
