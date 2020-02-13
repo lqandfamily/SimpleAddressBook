@@ -6,7 +6,7 @@ int closeFile(FILE *dbFile);
 
 int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
     FILE *db;
-    int i, flag = -999;
+    int i, flag;
     if (openFile(fileUrl, "r", &db) != SUCCESS) {
         return FILE_OPEN_ERROR;
     }
@@ -44,12 +44,6 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
                newContact->address, newContact->groupId);
 
     }
-
-
-    if (closeFile(db) == FILE_CLOSE_ERROR) {
-        return FILE_CLOSE_ERROR;
-    }
-    return SUCCESS;
 }
 
 int addContactToDB(char *fileUrl, ContactInfo *contact) {

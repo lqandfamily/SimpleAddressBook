@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include "ArrayListCore.h"
 
-#define BUFFER_LENGTH 1024
 
 /**
  * 从db文件中读取联系人信息存入数组
