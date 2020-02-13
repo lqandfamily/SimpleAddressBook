@@ -4,35 +4,49 @@ int openFile(char *fileUrl, char *mode, FILE **dbFile);
 
 int closeFile(FILE *dbFile);
 
-int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]){
+int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
     FILE *db;
-    int i;
-    char line[BUFFER_LENGTH];
-    if(openFile(fileUrl,"r",&db)!=SUCCESS){
+    int i, flag = -999;
+    if (openFile(fileUrl, "r", &db) != SUCCESS) {
         return FILE_OPEN_ERROR;
     }
 
-    int id;
-    char name[20];
-    char phoneNum[20];
-    char address[20];
-    int groupId;
 
-    //动态内存申请
-    ContactInfo *newContact = malloc(sizeof(ContactInfo));
-    if(newContact == NULL){
-        return MALLOC_ERROR;
+    i = 0;
+    while (1) {
+        //动态内存申请
+        ContactInfo *newContact = malloc(sizeof(ContactInfo));
+        if (newContact == NULL) {
+            return MALLOC_ERROR;
+        }
+        flag = fscanf(db, "%d", &newContact->id);
+        if(flag == EOF){
+            contactArr[i] = getEndContact();
+            return SUCCESS;
+        }
+
+        fscanf(db, "%s", newContact->name);
+        fscanf(db, "%s", newContact->phoneNum);
+        fscanf(db, "%s", newContact->address);
+        fscanf(db, "%d", &newContact->groupId);
+
+        contactArr[i] = newContact;
+
+        i++;
+        //联系人数组用尽
+        if(i >= MAX_CONTACT - 1){
+            contactArr[i] = getEndContact();
+            return RUN_OUT;
+        }
+
+        //此段为调试用代码
+        printf("************%d,%s,%s,%s,%d\n", newContact->id, newContact->name, newContact->phoneNum,
+               newContact->address, newContact->groupId);
+
     }
 
-    fscanf(db,"%d",&id);
-    fscanf(db,"%s",name);
-    fscanf(db,"%s",phoneNum);
-    fscanf(db,"%s",address);
-    fscanf(db,"%d",&groupId);
 
-    printf("************%d,%s,%s,%s,%d\n",id,name,phoneNum,address,groupId);
-
-    if(closeFile(db)==FILE_CLOSE_ERROR){
+    if (closeFile(db) == FILE_CLOSE_ERROR) {
         return FILE_CLOSE_ERROR;
     }
     return SUCCESS;
@@ -41,7 +55,7 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]){
 int addContactToDB(char *fileUrl, ContactInfo *contact) {
     FILE *db = NULL;
 
-    if (openFile(fileUrl, "a",&db) != SUCCESS) {
+    if (openFile(fileUrl, "a", &db) != SUCCESS) {
         return FILE_OPEN_ERROR;
     }
 
@@ -50,7 +64,7 @@ int addContactToDB(char *fileUrl, ContactInfo *contact) {
         return FILE_WRITE_ERROR;
     }
 
-    if(closeFile(db)==FILE_CLOSE_ERROR){
+    if (closeFile(db) == FILE_CLOSE_ERROR) {
         return FILE_CLOSE_ERROR;
     }
     return SUCCESS;

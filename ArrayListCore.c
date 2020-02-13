@@ -19,9 +19,7 @@ int contactNum = -1;
 //结束联系人
 ContactInfo *endContact = NULL;
 
-/**
- * 结束联系人标志
- */
+
 ContactInfo *getEndContact() {
     if (endContact == NULL) {
         endContact = malloc(sizeof(ContactInfo));
@@ -30,9 +28,6 @@ ContactInfo *getEndContact() {
     return endContact;
 }
 
-/**
- * 结束分组标志
- */
 Group *getEndGroup() {
     if (endGroup == NULL) {
         endGroup = malloc(sizeof(Group));

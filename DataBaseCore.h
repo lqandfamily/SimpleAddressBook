@@ -27,7 +27,8 @@
  * @version 0.20 没有实现分页读取
  * @param fileName
  * @param contactArr
- * @return
+ * @return FILE_OPEN_ERROR
+ *         MALLOC_ERROR
  */
 int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]);
 

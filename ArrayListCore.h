@@ -34,6 +34,15 @@ typedef struct {
     int groupId;
 } ContactInfo;
 
+/**
+ * 结束联系人标志
+ */
+ContactInfo *getEndContact();
+
+/**
+ * 结束分组标志
+ */
+Group *getEndGroup();
 
 /**
  * 销毁核心数组
