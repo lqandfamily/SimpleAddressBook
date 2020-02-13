@@ -9,12 +9,11 @@
 void dbTestAdd() {
     init();
     addByInfo("bob", "10086", "London", "friends");
-    ContactInfo *bobContact = findByAbsoluteName("bob");
+    addByInfo("tom", "10001", "London", "friends");
+    ContactInfo **contacts = findAll();
 
 
-    printf("%s\n", bobContact->name);
-
-    int resultCode = addContactToDB(CONTACTS_DB_FILE_URL, bobContact);
+    int resultCode = writeContactsToDB(CONTACTS_DB_FILE_URL, contacts);
     printf("resultCode:%d\n", resultCode);
     destroy();
 }

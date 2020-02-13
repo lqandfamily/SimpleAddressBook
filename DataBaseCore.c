@@ -20,7 +20,7 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
             return MALLOC_ERROR;
         }
         flag = fscanf(db, "%d", &newContact->id);
-        if(flag == EOF){
+        if (flag == EOF) {
             contactArr[i] = getEndContact();
             return SUCCESS;
         }
@@ -34,7 +34,7 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
 
         i++;
         //联系人数组用尽
-        if(i >= MAX_CONTACT - 1){
+        if (i >= MAX_CONTACT - 1) {
             contactArr[i] = getEndContact();
             return RUN_OUT;
         }
@@ -46,16 +46,22 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
     }
 }
 
-int addContactToDB(char *fileUrl, ContactInfo *contact) {
+int writeContactsToDB(char *fileUrl, ContactInfo *contactArr[]) {
+    int i;
     FILE *db = NULL;
 
     if (openFile(fileUrl, "a", &db) != SUCCESS) {
         return FILE_OPEN_ERROR;
     }
 
-    if (EOF == fprintf(db, "%d %s %s %s %d\n", contact->id, contact->name, contact->phoneNum, contact->address,
-                       contact->groupId)) {
-        return FILE_WRITE_ERROR;
+    for (i = 0; contactArr[i]->id != END_ID_CODE; i++) {
+
+        if (EOF ==
+            fprintf(db, "%d %s %s %s %d\n", contactArr[i]->id, contactArr[i]->name, contactArr[i]->phoneNum,
+                    contactArr[i]->address,
+                    contactArr[i]->groupId)) {
+            return FILE_WRITE_ERROR;
+        }
     }
 
     if (closeFile(db) == FILE_CLOSE_ERROR) {
@@ -64,7 +70,7 @@ int addContactToDB(char *fileUrl, ContactInfo *contact) {
     return SUCCESS;
 }
 
-int delContactInDB(char *fileUrl, int id){
+int delContactInDB(char *fileUrl, int id) {
     FILE *db = NULL;
 
     if (openFile(fileUrl, "w+", &db) != SUCCESS) {

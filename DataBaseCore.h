@@ -34,11 +34,11 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]);
 /**
  * 将新增的联系人写入db文件中
  * @param fileUrl
- * @param contact
+ * @param contactArr
  * @return FILE_OPEN_ERROR
  *         FILE_WRITE_ERROR
  */
-int addContactToDB(char *fileUrl, ContactInfo *contact);
+int writeContactsToDB(char *fileUrl, ContactInfo *contactArr[]);
 
 /**
  * 从DB文件中删除联系人
