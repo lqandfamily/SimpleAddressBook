@@ -3,7 +3,7 @@
  * @author lq
  * @version 0.1
  * @version 0.2 修改为GroupId进行外联的形式
- * @version 0.3 修改为内含Group的形式，阿西吧
+ * @version 0.3 本版作废，修改为内含Group的形式，阿西吧
  * @date 2020/2/12
  */
 
@@ -31,7 +31,7 @@ typedef struct {
     char name[20];          //姓名，唯一
     char phoneNum[20];      //电话，唯一
     char address[50];       //住址
-    Group group;
+    int groupId;
 } ContactInfo;
 
 
@@ -102,7 +102,14 @@ Group **findGroups();
  * @param group
  * @return 找到返回id，失败返回GROUP_NOT_EXIST
  */
-int findGroupId(char *group);
+int getGroupId(char *group);
+
+/**
+ * 根据Id获取对应的分组名称
+ * @param id
+ * @return 不存在返回NULL
+ */
+char *getGroupName(int id);
 
 /**
  * 通过姓名模糊查找联系人

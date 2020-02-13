@@ -105,10 +105,10 @@ int addByInfo(char *name, char *phoneNum, char *address, char *group) {
     }
     strcpy(newContact->address, address);
 
-    newContact->group.id = findGroupId(group);
+    newContact->groupId = getGroupId(group);
 
-    if (newContact->group.id == GROUP_NOT_EXIST) {
-        newContact->group.id = addGroup(group);
+    if (newContact->groupId == GROUP_NOT_EXIST) {
+        newContact->groupId = addGroup(group);
     }
 
     if (add(newContact) == RUN_OUT) {
@@ -172,7 +172,7 @@ Group **findGroups() {
     return groupArr;
 }
 
-int findGroupId(char *group) {
+int getGroupId(char *group) {
     int i;
     if (group == NULL || strcmp(group, "") == 0) {
         return GROUP_NULL;
@@ -183,6 +183,13 @@ int findGroupId(char *group) {
         }
     }
     return GROUP_NOT_EXIST;
+}
+
+char *getGroupName(int id){
+    if(id < 0 || id > groupNum){
+        return NULL;
+    }
+    return groupArr[id]->group;
 }
 
 
@@ -252,14 +259,14 @@ ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum) {
 
 ContactInfo **findByGroup(char *group) {
     int i, m = 0;
-    int foundGroupId = findGroupId(group);
+    int foundGroupId = getGroupId(group);
     if (foundGroupId == GROUP_NOT_EXIST) {
         return NULL;
     }
     static ContactInfo *foundContacts[MAX_CONTACT];
 
     for (i = 0; i <= contactNum; i++) {
-        if (contactArr[i]->group.id == foundGroupId) {
+        if (contactArr[i]->groupId == foundGroupId) {
             foundContacts[m++] = contactArr[i];
         }
     }
@@ -318,9 +325,9 @@ int altGroup(int id, char *group) {
         return GROUP_NULL;
     }
 
-    contactArr[id]->group.id = findGroupId(group);
-    if (contactArr[id]->group.id == GROUP_NOT_EXIST) {
-        contactArr[id]->group.id = addGroup(group);
+    contactArr[id]->groupId = getGroupId(group);
+    if (contactArr[id]->groupId == GROUP_NOT_EXIST) {
+        contactArr[id]->groupId = addGroup(group);
     }
 
     return SUCCESS;

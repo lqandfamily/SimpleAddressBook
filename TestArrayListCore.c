@@ -145,8 +145,8 @@ void testAltAddressOrGroup() {
 
     ContactInfo **contacts = findAll();
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
-        printf("%d,%s,%s,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
-               contacts[i]->group.group);
+        printf("%d,%s,%s,%s,%d\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
+               contacts[i]->groupId);
     }
     destroy();
 }
@@ -181,12 +181,15 @@ void testAddAndFindAllGroup() {
     ContactInfo **contacts = findAll();
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
         printf("%d,%s,%s,%s,%d,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
-               contacts[i]->group.id,contacts[i]->group.group);
+               contacts[i]->groupId,getGroupName(contacts[i]->groupId));
     }
 
     destroy();
 }
 
+/**
+ * 单独测试添加分组和查询所有分组
+ */
 void testAddGroup(){
     int i;
     init();
