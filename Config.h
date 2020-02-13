@@ -10,5 +10,7 @@
 
 //联系人最大容量，超过无法添加
 #define MAX_CONTACT 100
+//分组最大容量，超过无法添加
+#define MAX_GROUP 50
 
 #endif

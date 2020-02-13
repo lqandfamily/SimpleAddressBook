@@ -16,10 +16,12 @@
 #define PHONE_NULL -4       //电话为NULL或''
 #define PHONE_EXIST -5      //电话已经存在
 #define GROUP_NULL -6       //分组为NULL
-#define ADDRESS_NULL -7       //地址为NULL
-#define ID_NOT_EXIST -8     //id不存在
-#define RUN_OUT -9          //联系人容量溢出，无法添加
-#define MALLOC_ERROR -10    //动态内存申请失败
+#define ADDRESS_NULL -7     //地址为NULL
+#define GROUP_EXIST -8      //分组已经存在
+#define GROUP_NOT_EXIST -9      //分组不存在
+#define ID_NOT_EXIST -11     //id不存在
+#define RUN_OUT -12          //联系人容量溢出，无法添加
+#define MALLOC_ERROR -13    //动态内存申请失败
 
 
 #endif

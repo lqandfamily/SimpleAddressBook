@@ -1,8 +1,10 @@
 /**
+ * 实现了通过核心数组实现联系人的信息存储
  * @author lq
  * @version 0.1
+ * @version 0.2 修改为GroupId进行外联的形式
+ * @version 0.3 修改为内含Group的形式，阿西吧
  * @date 2020/2/12
- * 实现了通过核心数组实现联系人的信息存储
  */
 
 #ifndef ARRAY_LIST_CORE_H
@@ -16,12 +18,22 @@
 #define END_ID_CODE -2         //最后一个联系人结束的id标记
 
 typedef struct {
+    int id;
+    char group[20];
+} Group;
+
+/**
+ * @version 0.2 修改为GroupId进行外联的形式
+ * @version 0.3 修改为内含Group的形式
+ */
+typedef struct {
     int id;                 //id，唯一标识，自动生成
     char name[20];          //姓名，唯一
     char phoneNum[20];      //电话，唯一
     char address[50];       //住址
-    char group[20];         //分组
+    Group group;
 } ContactInfo;
+
 
 /**
  * 销毁核心数组
@@ -59,6 +71,14 @@ int add(ContactInfo *contactInfo);
 int addByInfo(char *name,char *phoneNum, char *address, char *group);
 
 /**
+ * 添加分组
+ * @param group
+ * @return 成功返回新添加的Group的id
+ *         GROUP_EXIST
+ */
+int addGroup(char *group);
+
+/**
  * 删除联系人，唯一途径是通过id
  * @param id
  * @return ID_NOT_EXIST
@@ -70,6 +90,19 @@ int del(int id);
  * @return 返回所有联系人数组的首地址，无则返回NULL
  */
 ContactInfo **findAll();
+
+/**
+ * 查找所有分组
+ * @return 返回所有分组数组的首地址，无则返回NULL
+ */
+Group **findGroups();
+
+/**
+ * 根据组名查找对应的id
+ * @param group
+ * @return 找到返回id，失败返回GROUP_NOT_EXIST
+ */
+int findGroupId(char *group);
 
 /**
  * 通过姓名模糊查找联系人
@@ -143,5 +176,6 @@ int altAddress(int id, char *address);
  *         GROUP_NULL
  */
 int altGroup(int id, char *group);
+
 
 #endif

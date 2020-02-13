@@ -3,8 +3,19 @@
 //核心联系人数组,使用指针来存储，减少内存开销
 //为了识别最后一个联系人，使用特殊id(END_ID_CODE)做标记
 ContactInfo *contactArr[MAX_CONTACT];
+
+//Group数组，同样使用指针来存储
+Group *groupArr[MAX_GROUP];
+
+//分组数量，这里做id
+int groupNum = -1;
+
+//结束分组
+Group *endGroup = NULL;
+
 //联系人数量，这里做id
 int contactNum = -1;
+
 //结束联系人
 ContactInfo *endContact = NULL;
 
@@ -19,28 +30,44 @@ ContactInfo *getEndContact() {
     return endContact;
 }
 
+/**
+ * 结束分组标志
+ */
+Group *getEndGroup() {
+    if (endGroup == NULL) {
+        endGroup = malloc(sizeof(Group));
+        endGroup->id = END_ID_CODE;
+    }
+    return endGroup;
+}
+
 int destroy() {
     int i;
     for (i = 0; i <= contactNum; i++) {
         free(contactArr[i]);
         contactArr[i] = NULL;
     }
+    for (i = 0; i <= groupNum; i++) {
+        free(groupArr[i]);
+        groupArr[i] = NULL;
+    }
     return SUCCESS;
 }
 
 int init() {
-    if (contactNum != -1) {
+    if (contactNum != -1 || groupNum != -1) {
         return ERROR;
     }
     contactArr[0] = getEndContact();
+    groupArr[0] = getEndGroup();
     return SUCCESS;
 }
 
 int add(ContactInfo *contactInfo) {
-    contactNum++;
-    if (contactNum >= MAX_CONTACT) {
+    if (contactNum + 1 >= MAX_CONTACT - 1) {
         return RUN_OUT;
     }
+    contactNum++;
     contactArr[contactNum] = contactInfo;
     //结束ID处理
     contactArr[contactNum + 1] = getEndContact();
@@ -77,13 +104,49 @@ int addByInfo(char *name, char *phoneNum, char *address, char *group) {
         group = "";
     }
     strcpy(newContact->address, address);
-    strcpy(newContact->group, group);
+
+    newContact->group.id = findGroupId(group);
+
+    if (newContact->group.id == GROUP_NOT_EXIST) {
+        newContact->group.id = addGroup(group);
+    }
 
     if (add(newContact) == RUN_OUT) {
         return RUN_OUT;
     }
 
     return SUCCESS;
+}
+
+int addGroup(char *group) {
+    int i;
+    //TODO
+    if (groupNum + 1 >= MAX_GROUP - 1) {
+        return RUN_OUT;
+    }
+    if (group == NULL || strcmp(group, "") == 0) {
+        return GROUP_NULL;
+    }
+    for (i = 0; i <= groupNum; i++) {
+        if (strcmp(group, groupArr[i]->group) == 0) {
+            return GROUP_EXIST;
+        }
+    }
+
+    //动态申请内存地址
+    Group *newGroup = malloc(sizeof(Group));
+    if(newGroup == NULL){
+        return MALLOC_ERROR;
+    }
+    groupNum++;
+
+    newGroup->id = groupNum;
+    strcpy(newGroup->group,group);
+
+    groupArr[groupNum] = newGroup;
+
+    groupArr[groupNum + 1] = getEndGroup();
+    return groupNum;
 }
 
 int del(int id) {
@@ -104,6 +167,24 @@ int del(int id) {
 ContactInfo **findAll() {
     return contactArr;
 }
+
+Group **findGroups() {
+    return groupArr;
+}
+
+int findGroupId(char *group) {
+    int i;
+    if (group == NULL || strcmp(group, "") == 0) {
+        return GROUP_NULL;
+    }
+    for (i = 0; i <= groupNum; i++) {
+        if (strcmp(group, groupArr[i]->group) == 0) {
+            return i;
+        }
+    }
+    return GROUP_NOT_EXIST;
+}
+
 
 ContactInfo **findByName(char *name) {
     int i, m = 0;
@@ -137,7 +218,7 @@ ContactInfo *findByAbsoluteName(char *absoluteName) {
     return NULL;
 }
 
-ContactInfo **findByPhoneNum(char *phoneNum){
+ContactInfo **findByPhoneNum(char *phoneNum) {
     int i, m = 0;
     /**
      * 另外，C 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量
@@ -169,13 +250,16 @@ ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum) {
     return NULL;
 }
 
-ContactInfo **findByGroup(char *group){
+ContactInfo **findByGroup(char *group) {
     int i, m = 0;
-
+    int foundGroupId = findGroupId(group);
+    if (foundGroupId == GROUP_NOT_EXIST) {
+        return NULL;
+    }
     static ContactInfo *foundContacts[MAX_CONTACT];
 
     for (i = 0; i <= contactNum; i++) {
-        if (strstr(contactArr[i]->group, group) != NULL) {
+        if (contactArr[i]->group.id == foundGroupId) {
             foundContacts[m++] = contactArr[i];
         }
     }
@@ -186,54 +270,59 @@ ContactInfo **findByGroup(char *group){
     return foundContacts;
 }
 
-int altName(int id, char *name){
-    if(id <0 || id > contactNum || contactArr[id] == NULL){
+int altName(int id, char *name) {
+    if (id < 0 || id > contactNum || contactArr[id] == NULL) {
         return ID_NOT_EXIST;
     }
-    if(name == NULL || strcmp(name,"") == 0){
+    if (name == NULL || strcmp(name, "") == 0) {
         return NAME_NULL;
     }
-    if(findByAbsoluteName(name) != NULL){
+    if (findByAbsoluteName(name) != NULL) {
         return NAME_EXIST;
     }
-    strcpy(contactArr[id]->name,name);
+    strcpy(contactArr[id]->name, name);
     return SUCCESS;
 }
 
-int altPhone(int id, char *phoneNum){
-    if(id <0 || id > contactNum || contactArr[id] == NULL){
+int altPhone(int id, char *phoneNum) {
+    if (id < 0 || id > contactNum || contactArr[id] == NULL) {
         return ID_NOT_EXIST;
     }
-    if(phoneNum == NULL || strcmp(phoneNum,"") == 0){
+    if (phoneNum == NULL || strcmp(phoneNum, "") == 0) {
         return NAME_NULL;
     }
-    if(findByAbsolutePhoneNum(phoneNum) != NULL){
+    if (findByAbsolutePhoneNum(phoneNum) != NULL) {
         return NAME_EXIST;
     }
-    strcpy(contactArr[id]->phoneNum,phoneNum);
+    strcpy(contactArr[id]->phoneNum, phoneNum);
     return SUCCESS;
 }
 
-int altAddress(int id, char *address){
-    if(id <0 || id > contactNum || contactArr[id] == NULL){
+int altAddress(int id, char *address) {
+    if (id < 0 || id > contactNum || contactArr[id] == NULL) {
         return ID_NOT_EXIST;
     }
-    if(address == NULL){
+    if (address == NULL) {
         return ADDRESS_NULL;
     }
-    strcpy(contactArr[id]->address,address);
+    strcpy(contactArr[id]->address, address);
     return SUCCESS;
 }
 
-int altGroup(int id, char *group){
-    if(id <0 || id > contactNum || contactArr[id] == NULL){
+int altGroup(int id, char *group) {
+    if (id < 0 || id > contactNum || contactArr[id] == NULL) {
         return ID_NOT_EXIST;
     }
 
-    if(group == NULL){
+    if (group == NULL) {
         return GROUP_NULL;
     }
-    strcpy(contactArr[id]->group,group);
+
+    contactArr[id]->group.id = findGroupId(group);
+    if (contactArr[id]->group.id == GROUP_NOT_EXIST) {
+        contactArr[id]->group.id = addGroup(group);
+    }
+
     return SUCCESS;
 }
 

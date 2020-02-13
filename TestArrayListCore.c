@@ -146,7 +146,7 @@ void testAltAddressOrGroup() {
     ContactInfo **contacts = findAll();
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
         printf("%d,%s,%s,%s,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
-               contacts[i]->group);
+               contacts[i]->group.group);
     }
     destroy();
 }
@@ -168,14 +168,50 @@ void testFindByGroup() {
     destroy();
 }
 
+
+/**
+ * 测试添加分组和查找所有分组
+ */
+void testAddAndFindAllGroup() {
+    int i;
+    init();
+    addByInfo("bob", "10086", "London", "friend");
+    addByInfo("tom", "10001", "Shanghai", "friend");
+    addByInfo("alice", "100011", "Zunyi", "family");
+    ContactInfo **contacts = findAll();
+    for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
+        printf("%d,%s,%s,%s,%d,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
+               contacts[i]->group.id,contacts[i]->group.group);
+    }
+
+    destroy();
+}
+
+void testAddGroup(){
+    int i;
+    init();
+
+    addGroup("friend");
+    addGroup("family");
+    Group **groups = findGroups();
+
+    for(i = 0; groups[i]->id != END_ID_CODE; i++){
+        printf("%d,%s\n",groups[i]->id,groups[i]->group);
+    }
+
+    destroy();
+}
+
 int main() {
 //    testAdd();
 //    testDelAndDestroy();
 //     testAddRepeat();
 //    testFindByNameOrPhone();
 //    testAltNameOrPhone();
-    testAltAddressOrGroup();
+//    testAltAddressOrGroup();
 //    testFindByGroup();
+//    testAddAndFindAllGroup();
+testAddGroup();
     return 0;
 }
 
