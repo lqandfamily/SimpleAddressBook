@@ -1,9 +1,9 @@
 /**
  * 实现了通过核心数组实现联系人的信息存储
  * @author lq
- * @version 0.1
- * @version 0.2 修改为GroupId进行外联的形式
- * @version 0.3 本版作废，修改为内含Group的形式，阿西吧
+ * @version 0.10
+ * @version 0.12 修改为GroupId进行外联的形式
+ * @version 0.33 本版作废，修改为内含Group的形式，阿西吧
  * @date 2020/2/12
  */
 
@@ -23,8 +23,8 @@ typedef struct {
 } Group;
 
 /**
- * @version 0.2 修改为GroupId进行外联的形式
- * @version 0.3 修改为内含Group的形式
+ * @version 0.12 修改为GroupId进行外联的形式
+ * @version 0.13 修改为内含Group的形式
  */
 typedef struct {
     int id;                 //id，唯一标识，自动生成

@@ -23,5 +23,9 @@
 #define RUN_OUT -12          //联系人容量溢出，无法添加
 #define MALLOC_ERROR -13    //动态内存申请失败
 
+#define FILE_OPEN_ERROR -21     //db文件打开错误
+#define FILE_CLOSE_ERROR -21    //db文件关闭错误
+#define FILE_READ_ERROR -23     //文件读取出错
+#define FILE_WRITE_ERROR -24    //文件写入出错
 
 #endif

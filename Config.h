@@ -13,4 +13,9 @@
 //分组最大容量，超过无法添加
 #define MAX_GROUP 50
 
+//数据库存储文件及文件名定义
+#define CONTACTS_DB_FILE_URL "C:\\Users\\blue\\CLionProjects\\SimpleAddressBook\\db\\contacts.db"
+#define GROUPS_DB_FILE_URL "C:\\Users\\blue\\CLionProjects\\SimpleAddressBook\\db\\groups.db"
+
+
 #endif

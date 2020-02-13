@@ -211,6 +211,7 @@ void testAddGroup(){
     destroy();
 }
 
+/*
 int main() {
 //    testAdd();
 //    testDelAndDestroy();
@@ -222,5 +223,6 @@ int main() {
     testAddAndFindAllGroup();
 //testAddGroup();
     return 0;
-}
+} 
+*/
 
