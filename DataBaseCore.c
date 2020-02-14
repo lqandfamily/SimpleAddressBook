@@ -4,7 +4,7 @@ int openFile(char *fileUrl, char *mode, FILE **dbFile);
 
 int closeFile(FILE *dbFile);
 
-int readFromDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
+int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
     FILE *db;
     int i, flag;
     if (openFile(fileUrl, "r", &db) != SUCCESS) {
@@ -22,6 +22,9 @@ int readFromDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
         flag = fscanf(db, "%d", &newContact->id);
         if (flag == EOF) {
             contactArr[i] = getEndContact();
+            if (closeFile(db) == FILE_CLOSE_ERROR) {
+                return FILE_CLOSE_ERROR;
+            }
             return SUCCESS;
         }
 
@@ -36,6 +39,9 @@ int readFromDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
         //联系人数组用尽
         if (i >= MAX_CONTACT - 1) {
             contactArr[i] = getEndContact();
+            if (closeFile(db) == FILE_CLOSE_ERROR) {
+                return FILE_CLOSE_ERROR;
+            }
             return RUN_OUT;
         }
 
@@ -44,9 +50,11 @@ int readFromDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
 //               newContact->address, newContact->groupId);
 
     }
+
 }
 
-int writeToDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
+
+int writeContactsToDB(char *fileUrl, ContactInfo *contactArr[]) {
     int i;
     FILE *db = NULL;
 
@@ -69,6 +77,75 @@ int writeToDB(char *fileUrl, ContactInfo *contactArr[], int kind) {
     }
     return SUCCESS;
 }
+
+
+int readGroupsFromDB(char *fileUrl, Group *groupArr[]) {
+    FILE *db;
+    int i, flag;
+    if (openFile(fileUrl, "r", &db) != SUCCESS) {
+        return FILE_OPEN_ERROR;
+    }
+
+
+    i = 0;
+    while (1) {
+        //动态内存申请
+        Group *newGroup = malloc(sizeof(Group));
+        if (newGroup == NULL) {
+            return MALLOC_ERROR;
+        }
+        flag = fscanf(db, "%d", &newGroup->id);
+        if (flag == EOF) {
+            groupArr[i] = getEndGroup();
+            if (closeFile(db) == FILE_CLOSE_ERROR) {
+                return FILE_CLOSE_ERROR;
+            }
+            return SUCCESS;
+        }
+        fscanf(db, "%s", newGroup->group);
+
+        groupArr[i] = newGroup;
+
+        i++;
+        //联系人数组用尽
+        if (i >= MAX_CONTACT - 1) {
+            groupArr[i] = getEndGroup();
+            if (closeFile(db) == FILE_CLOSE_ERROR) {
+                return FILE_CLOSE_ERROR;
+            }
+            return RUN_OUT;
+        }
+
+//        //此段为调试用代码
+//        printf("************%d,%s,%s,%s,%d\n", newContact->id, newContact->name, newContact->phoneNum,
+//               newContact->address, newContact->groupId);
+
+    }
+
+}
+
+int writeGroupsToDB(char *fileUrl, Group *groupArr[]) {
+    int i;
+    FILE *db = NULL;
+
+    if (openFile(fileUrl, "w", &db) != SUCCESS) {
+        return FILE_OPEN_ERROR;
+    }
+
+    for (i = 0; groupArr[i]->id != END_ID_CODE; i++) {
+
+        if (EOF ==
+            fprintf(db, "%d %s\n", groupArr[i]->id, groupArr[i]->group)) {
+            return FILE_WRITE_ERROR;
+        }
+    }
+
+    if (closeFile(db) == FILE_CLOSE_ERROR) {
+        return FILE_CLOSE_ERROR;
+    }
+    return SUCCESS;
+}
+
 
 /**
  * 打开DB文件
