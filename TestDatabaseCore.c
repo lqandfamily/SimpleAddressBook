@@ -34,8 +34,8 @@ void dbTestReadContacts() {
     ContactInfo *contacts[MAX_CONTACT];
     Group *groups[MAX_GROUP];
 
-    readContactsFromDB(CONTACTS_DB_FILE_URL, contacts);
-    readGroupsFromDB(GROUPS_DB_FILE_URL, groups);
+    readContactsFromDB(CONTACTS_DB_FILE_URL, contacts,&i);
+    readGroupsFromDB(GROUPS_DB_FILE_URL, groups,&i);
 
     for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
         printf("%d,%s,%s,%s,%d,%s\n", contacts[i]->id, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address,
@@ -44,10 +44,10 @@ void dbTestReadContacts() {
     destroy();
 
 }
-
-int main() {
-    dbTestWriteContacts();
-    dbTestReadContacts();
-
-    return 0;
-}
+//
+//int main() {
+//    dbTestWriteContacts();
+//    dbTestReadContacts();
+//
+//    return 0;
+//}

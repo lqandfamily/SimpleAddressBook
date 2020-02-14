@@ -130,13 +130,13 @@ int addGroup(char *group) {
 
     //动态申请内存地址
     Group *newGroup = malloc(sizeof(Group));
-    if(newGroup == NULL){
+    if (newGroup == NULL) {
         return MALLOC_ERROR;
     }
     groupNum++;
 
     newGroup->id = groupNum;
-    strcpy(newGroup->group,group);
+    strcpy(newGroup->group, group);
 
     groupArr[groupNum] = newGroup;
 
@@ -180,8 +180,8 @@ int getGroupId(char *group) {
     return GROUP_NOT_EXIST;
 }
 
-char *getGroupName(int id){
-    if(id < 0 || id > groupNum){
+char *getGroupName(int id) {
+    if (id < 0 || id > groupNum) {
         return NULL;
     }
     return groupArr[id]->group;
@@ -327,5 +327,21 @@ int altGroup(int id, char *group) {
 
     return SUCCESS;
 }
+
+int saveToDB() {
+    if (writeAllToDB(contactArr, groupArr) != SUCCESS) {
+        return ERROR;
+    }
+    return SUCCESS;
+}
+
+int loadFromDB() {
+    if (readAllFromDB(contactArr, groupArr,&contactNum,&groupNum) != SUCCESS) {
+        return ERROR;
+    }
+    return SUCCESS;
+}
+
+
 
 

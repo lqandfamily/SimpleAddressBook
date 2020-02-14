@@ -14,25 +14,12 @@
 #include <string.h>
 #include "ErrorCode.h"
 #include "Config.h"
+#include "Domain.h"
+#include "DataBaseCore.h"
 
 #define END_ID_CODE -2         //最后一个联系人结束的id标记
 
-typedef struct {
-    int id;
-    char group[20];
-} Group;
 
-/**
- * @version 0.12 修改为GroupId进行外联的形式
- * @version 0.13 修改为内含Group的形式
- */
-typedef struct {
-    int id;                 //id，唯一标识，自动生成
-    char name[20];          //姓名，唯一
-    char phoneNum[20];      //电话，唯一
-    char address[50];       //住址
-    int groupId;
-} ContactInfo;
 
 /**
  * 结束联系人标志
@@ -192,6 +179,19 @@ int altAddress(int id, char *address);
  *         GROUP_NULL
  */
 int altGroup(int id, char *group);
+
+/**
+ * 数据持久化
+ * @return ERROR
+ */
+int saveToDB();
+
+/**
+ * 从db文件中加载数据
+ * @note 通过加载数据的方式无需调用init方法
+ * @return ERROR
+ */
+int loadFromDB();
 
 
 #endif

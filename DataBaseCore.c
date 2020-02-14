@@ -4,7 +4,7 @@ int openFile(char *fileUrl, char *mode, FILE **dbFile);
 
 int closeFile(FILE *dbFile);
 
-int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
+int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[], int *contactNum) {
     FILE *db;
     int i, flag;
     if (openFile(fileUrl, "r", &db) != SUCCESS) {
@@ -21,6 +21,7 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
         }
         flag = fscanf(db, "%d", &newContact->id);
         if (flag == EOF) {
+            *contactNum = i - 1;
             contactArr[i] = getEndContact();
             if (closeFile(db) == FILE_CLOSE_ERROR) {
                 return FILE_CLOSE_ERROR;
@@ -34,10 +35,10 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
         fscanf(db, "%d", &newContact->groupId);
 
         contactArr[i] = newContact;
-
         i++;
         //联系人数组用尽
         if (i >= MAX_CONTACT - 1) {
+            *contactNum = i - 1;
             contactArr[i] = getEndContact();
             if (closeFile(db) == FILE_CLOSE_ERROR) {
                 return FILE_CLOSE_ERROR;
@@ -52,7 +53,6 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[]) {
     }
 
 }
-
 
 int writeContactsToDB(char *fileUrl, ContactInfo *contactArr[]) {
     int i;
@@ -79,7 +79,7 @@ int writeContactsToDB(char *fileUrl, ContactInfo *contactArr[]) {
 }
 
 
-int readGroupsFromDB(char *fileUrl, Group *groupArr[]) {
+int readGroupsFromDB(char *fileUrl, Group *groupArr[], int *groupNum) {
     FILE *db;
     int i, flag;
     if (openFile(fileUrl, "r", &db) != SUCCESS) {
@@ -96,6 +96,7 @@ int readGroupsFromDB(char *fileUrl, Group *groupArr[]) {
         }
         flag = fscanf(db, "%d", &newGroup->id);
         if (flag == EOF) {
+            *groupNum = i - 1;
             groupArr[i] = getEndGroup();
             if (closeFile(db) == FILE_CLOSE_ERROR) {
                 return FILE_CLOSE_ERROR;
@@ -109,6 +110,7 @@ int readGroupsFromDB(char *fileUrl, Group *groupArr[]) {
         i++;
         //联系人数组用尽
         if (i >= MAX_CONTACT - 1) {
+            *groupNum = i - 1;
             groupArr[i] = getEndGroup();
             if (closeFile(db) == FILE_CLOSE_ERROR) {
                 return FILE_CLOSE_ERROR;
@@ -146,6 +148,47 @@ int writeGroupsToDB(char *fileUrl, Group *groupArr[]) {
     return SUCCESS;
 }
 
+int readAllFromDB(ContactInfo *contactArr[],Group *groupArr[], int *contactNum, int *groupNum) {
+
+    switch (readContactsFromDB(CONTACTS_DB_FILE_URL,contactArr, contactNum)) {
+        case FILE_OPEN_ERROR:
+            return FILE_OPEN_ERROR;
+        case FILE_CLOSE_ERROR:
+            return FILE_CLOSE_ERROR;
+        case MALLOC_ERROR:
+            return MALLOC_ERROR;
+    }
+
+    switch (readGroupsFromDB(GROUPS_DB_FILE_URL,groupArr,groupNum)) {
+        case FILE_OPEN_ERROR:
+            return FILE_OPEN_ERROR;
+        case FILE_CLOSE_ERROR:
+            return FILE_CLOSE_ERROR;
+        case MALLOC_ERROR:
+            return MALLOC_ERROR;
+    }
+    return SUCCESS;
+}
+int writeAllToDB(ContactInfo *contactArr[],Group *groupArr[]){
+    switch (writeContactsToDB(CONTACTS_DB_FILE_URL,contactArr)) {
+        case FILE_OPEN_ERROR:
+            return FILE_OPEN_ERROR;
+        case FILE_CLOSE_ERROR:
+            return FILE_CLOSE_ERROR;
+        case FILE_WRITE_ERROR:
+            return FILE_WRITE_ERROR;
+    }
+
+    switch (writeGroupsToDB(GROUPS_DB_FILE_URL,groupArr)) {
+        case FILE_OPEN_ERROR:
+            return FILE_OPEN_ERROR;
+        case FILE_CLOSE_ERROR:
+            return FILE_CLOSE_ERROR;
+        case FILE_WRITE_ERROR:
+            return FILE_WRITE_ERROR;
+    }
+    return SUCCESS;
+}
 
 /**
  * 打开DB文件
