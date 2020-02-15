@@ -1,1 +1,1 @@
-show all group -> details --> id错误
+show all group -> details --> id错误(已修复)

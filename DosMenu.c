@@ -335,10 +335,7 @@ int inputMenuIndex(int *menuIndex , int maxMenuIndex) {
     return SUCCESS;
 }
 
-
 int main() {
-    int menuIndex = 999;
-    mainMenu(&menuIndex);
-
+    mainMenu();
     return 0;
 }
