@@ -1,0 +1,50 @@
+/**
+ * 菜单显示
+ * @author lq
+ * @date 2020/2/14
+ * @version 0.30
+**/
+
+
+**********SimpleAddressBook Software**********
+1.show all contacts
+2.show all groups
+3.vague search
+4.add
+5.save to file
+>>>input menu index:
+
+
+**********ALL CONTACTS*********
+*****input 'q' to exit, input index to show details*****
+
+>>>input menu index:
+
+
+*********CONTACT DETAILS**********
+q.exit
+1.modify
+2.delete
+
+>>>input menu index:
+
+
+**********ALL GROUPS**********
+*****input 'q' to exit, input index to show  all contacts of the group******
+
+>>>input menu index:
+
+
+**********VAGUE SEARCH**********
+1.by name
+2.by phoneNumber
+3.by exact group name
+>>>input menu index:
+
+
+**********ADD**********
+input name:
+input phoneNumber:
+input address:
+input group:
+
