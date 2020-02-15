@@ -28,6 +28,7 @@ char *ALL_GROUPS = "**********ALL GROUPS**********\n"
                    "*****input '-1' to exit, input index to show  all contacts of the group******";
 
 char *VAGUE_SEARCH = "**********VAGUE SEARCH**********\n"
+                     "-1.exit\n"
                      "1.by name\n"
                      "2.by phoneNumber\n"
                      "3.by exact group name\n";
@@ -39,15 +40,21 @@ char *INPUT_MENU_INDEX = ">>>input menu index:";
 
 int mainMenu();
 
-int showAllContacts();
+int showContacts(ContactInfo *contacts[]);
 
 int showAllGroups();
 
-int showContactsOfGroup(int groupId);
+int showAllContacts();
 
 int showDetails(int id);
 
 int vagueSearch();
+
+int searchByName();
+
+int searchByPhone();
+
+int searchByGroup();
 
 int deleteContact(int id);
 

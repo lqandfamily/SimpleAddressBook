@@ -20,6 +20,9 @@ int mainMenu( ) {
             case 2:
                 showAllGroups();
                 break;
+            case 3:
+                vagueSearch();
+                break;
             case 4:
                 newContact();
                 break;
@@ -33,10 +36,8 @@ int mainMenu( ) {
     }
 }
 
-int showAllContacts( ) {
+int showContacts(ContactInfo *contacts[]) {
     int i,menuIndex;
-
-    ContactInfo **contacts = findAll();
 
     puts(ALL_CONTACTS);
 
@@ -53,7 +54,7 @@ int showAllContacts( ) {
     /**
      * 下级菜单
      */
-    inputMenuIndex(&menuIndex,i);
+    inputMenuIndex(&menuIndex,MAX_CONTACT);
     if(menuIndex == -1){
         return SUCCESS;
     } else{
@@ -87,52 +88,29 @@ int showAllGroups(){
     if(menuIndex == -1){
         return SUCCESS;
     } else{
-        showContactsOfGroup(menuIndex - 1);
+        showContacts(findByGroupId(menuIndex - 1));
     }
 
     return SUCCESS;
 }
 
-
-int showContactsOfGroup(int groupId){
-    //maxContactId 该分组下联系人中最大的id，用于下级菜单输入索引判断
-    int i, menuIndex, maxContactId = -1;
-
-    ContactInfo **contacts = findByGroup(getGroupName(groupId));
-
-    puts(ALL_CONTACTS);
-
-    if (contacts[0]->id == END_ID_CODE) {
-        printf("There no contact, please to add\n");
-        return SUCCESS;
-    }
-
-    printf("ID  NAME    PHONE          ADDRESS          Group     \n");
-    for (i = 0; contacts[i]->id != END_ID_CODE; i++) {
-        printf("%-4d%-8s%-15s%-17s%-10s\n", contacts[i]->id + 1, contacts[i]->name, contacts[i]->phoneNum, contacts[i]->address, getGroupName(contacts[i]->groupId));
-    }
-
-    /**
-     * 下级菜单
-     */
-
-    inputMenuIndex(&menuIndex,MAX_MENU_INDEX);
-
-    if(menuIndex == -1){
-        return SUCCESS;
-    } else{
-        showDetails(menuIndex - 1);
-    }
-
+int showAllContacts(){
+    showContacts(findAll());
     return SUCCESS;
 }
-
 
 int showDetails(int id){
     int menuIndex;
     ContactInfo *contact = getContactById(id);
 
+    if(contact == NULL){
+        printf("Error:there no contact!\n");
+        return ERROR;
+    }
+
     puts(CONTACT_DETAILS);
+
+
 
     printf("ID  NAME    PHONE          ADDRESS          Group     \n");
     printf("%-4d%-8s%-15s%-17s%-10s\n", contact->id + 1, contact->name, contact->phoneNum, contact->address, getGroupName(contact->groupId));
@@ -155,7 +133,80 @@ int showDetails(int id){
     return SUCCESS;
 }
 
-int vagueSearch( );
+int vagueSearch(){
+    int menuIndex;
+
+    puts(VAGUE_SEARCH);
+
+    inputMenuIndex(&menuIndex,3);
+
+    switch (menuIndex){
+        case -1:
+            return SUCCESS;
+        case 1:
+            searchByName();
+            break;
+        case 2:
+            searchByPhone();
+            break;
+        case 3:
+            searchByGroup();
+            break;
+        default:
+            break;
+    }
+
+    return SUCCESS;
+}
+
+
+int searchByName(){
+    char name[20];
+    printf("please input name to search, input 'enter' to exit\n");
+    fflush(stdin);
+    gets(name);
+
+    if(strcmp(name,"") == 0){
+        return SUCCESS;
+    }
+
+
+
+    showContacts(findByName(name));
+
+    return SUCCESS;
+}
+
+int searchByPhone(){
+    char phone[20];
+    printf("please input phone to search, input 'enter' to exit\n");
+    fflush(stdin);
+    gets(phone);
+
+    if(strcmp(phone, "") == 0){
+        return SUCCESS;
+    }
+
+    showContacts(findByPhoneNum(phone));
+
+    return SUCCESS;
+}
+
+int searchByGroup(){
+    char group[20];
+    printf("please input group to search, input 'enter' to exit\n");
+    fflush(stdin);
+    gets(group);
+
+    if(strcmp(group, "") == 0){
+        return SUCCESS;
+    }
+
+    showContacts(findByGroup(group));
+
+    return SUCCESS;
+}
+
 
 int deleteContact(int id){
     int menuIndex;

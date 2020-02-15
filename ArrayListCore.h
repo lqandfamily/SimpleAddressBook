@@ -110,7 +110,7 @@ char *getGroupName(int id);
 /**
  * 通过姓名模糊查找联系人
  * @param name
- * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
+ * @return 返回所有符合条件联系人数组的首地址，无则返回第一条就是END_ID_CODE
  */
 ContactInfo **findByName(char *name);
 
@@ -124,7 +124,7 @@ ContactInfo *findByAbsoluteName(char *absoluteName);
 /**
  * 通过号码模糊查找联系人
  * @param phoneNum
- * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
+ * @return 返回所有符合条件联系人数组的首地址，无则返回第一条就是END_ID_CODE
  */
 ContactInfo **findByPhoneNum(char *phoneNum);
 
@@ -139,14 +139,14 @@ ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum);
 /**
  * 根据id获取联系人
  * @param id
- * @return 失败为NULL
+ * @return 失败为返回第一条就是END_ID_CODE
  */
 ContactInfo *getContactById(int id);
 
 /**
  * 通过分组名查找联系人，非模糊查询
  * @param group
- * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
+ * @return 返回所有符合条件联系人数组的首地址，无则返回第一条就是END_ID_CODE
  */
 ContactInfo **findByGroup(char *group);
 

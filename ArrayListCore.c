@@ -200,9 +200,6 @@ ContactInfo **findByName(char *name) {
             foundContacts[m++] = contactArr[i];
         }
     }
-    if (m == 0) {
-        return NULL;
-    }
     foundContacts[m] = getEndContact();
     return foundContacts;
 }
@@ -232,9 +229,7 @@ ContactInfo **findByPhoneNum(char *phoneNum) {
             foundContacts[m++] = contactArr[i];
         }
     }
-    if (m == 0) {
-        return NULL;
-    }
+
     foundContacts[m] = getEndContact();
     return foundContacts;
 }
@@ -262,19 +257,19 @@ ContactInfo *getContactById(int id){
 ContactInfo **findByGroup(char *group) {
     int i, m = 0;
     int foundGroupId = getGroupId(group);
-    if (foundGroupId == GROUP_NOT_EXIST) {
-        return NULL;
-    }
     static ContactInfo *foundContacts[MAX_CONTACT];
+
+    if (foundGroupId == GROUP_NOT_EXIST) {
+        foundContacts[0] = getEndContact();
+        return foundContacts;
+    }
 
     for (i = 0; i <= contactNum; i++) {
         if (contactArr[i]->groupId == foundGroupId) {
             foundContacts[m++] = contactArr[i];
         }
     }
-    if (m == 0) {
-        return NULL;
-    }
+
     foundContacts[m] = getEndContact();
     return foundContacts;
 }

@@ -8,6 +8,7 @@ int readContactsFromDB(char *fileUrl, ContactInfo *contactArr[], int *contactNum
     FILE *db;
     int i, flag;
     if (openFile(fileUrl, "r", &db) != SUCCESS) {
+        openFile(fileUrl,"w",&db);
         return FILE_OPEN_ERROR;
     }
 
@@ -83,6 +84,7 @@ int readGroupsFromDB(char *fileUrl, Group *groupArr[], int *groupNum) {
     FILE *db;
     int i, flag;
     if (openFile(fileUrl, "r", &db) != SUCCESS) {
+        openFile(fileUrl,"w",&db);
         return FILE_OPEN_ERROR;
     }
 

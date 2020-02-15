@@ -1,0 +1,1 @@
+show all group -> details --> id错误
