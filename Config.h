@@ -17,5 +17,10 @@
 #define CONTACTS_DB_FILE_URL "C:\\Users\\blue\\CLionProjects\\SimpleAddressBook\\db\\contacts.db"
 #define GROUPS_DB_FILE_URL "C:\\Users\\blue\\CLionProjects\\SimpleAddressBook\\db\\groups.db"
 
+//菜单系统中索引的边界
+#define MIN_MENU_INDEX -1
+#define MAX_MENU_INDEX 65536
+
+
 
 #endif

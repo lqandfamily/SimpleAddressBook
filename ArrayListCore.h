@@ -135,12 +135,28 @@ ContactInfo **findByPhoneNum(char *phoneNum);
  */
 ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum);
 
+
 /**
- * 通过分组查找联系人，非模糊查询
+ * 根据id获取联系人
+ * @param id
+ * @return 失败为NULL
+ */
+ContactInfo *getContactById(int id);
+
+/**
+ * 通过分组名查找联系人，非模糊查询
  * @param group
  * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
  */
 ContactInfo **findByGroup(char *group);
+
+
+/**
+ * 通过groupId查找联系人
+ * @param groupId
+ * @return 返回所有符合条件联系人数组的首地址，无则返回NULL
+ */
+ContactInfo **findByGroupId(int groupId);
 
 /**
  * 通过id修改姓名

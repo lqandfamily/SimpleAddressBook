@@ -12,17 +12,16 @@
 3.vague search
 4.add
 5.save to file
->>>input menu index:
-
+-1.exit
 
 **********ALL CONTACTS*********
-*****input 'q' to exit, input index to show details*****
+*****input '-1' to exit, input index to show details*****
 
 >>>input menu index:
 
 
 *********CONTACT DETAILS**********
-q.exit
+-1.exit
 1.modify
 2.delete
 
@@ -30,7 +29,7 @@ q.exit
 
 
 **********ALL GROUPS**********
-*****input 'q' to exit, input index to show  all contacts of the group******
+*****input '-1' to exit, input index to show  all contacts of the group******
 
 >>>input menu index:
 

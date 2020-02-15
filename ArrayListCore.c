@@ -252,6 +252,13 @@ ContactInfo *findByAbsolutePhoneNum(char *absolutePhoneNum) {
     return NULL;
 }
 
+ContactInfo *getContactById(int id){
+    if(id < 0 || id > contactNum){
+        return NULL;
+    }
+    return contactArr[id];
+}
+
 ContactInfo **findByGroup(char *group) {
     int i, m = 0;
     int foundGroupId = getGroupId(group);
@@ -270,6 +277,29 @@ ContactInfo **findByGroup(char *group) {
     }
     foundContacts[m] = getEndContact();
     return foundContacts;
+}
+
+ContactInfo **findByGroupId(int groupId){
+    int i,m;
+    static ContactInfo *contacts[MAX_CONTACT];
+    if(groupId < 0 || groupId > groupNum){
+        return NULL;
+    }
+
+    m = 0;
+    for(i = 0; contactArr[i]->id != END_ID_CODE;i++){
+        if(contactArr[i]->groupId == groupId){
+            contacts[m] = contactArr[i];
+            m++;
+        }
+    }
+    if(m == 0){
+        return NULL;
+    }
+
+    contacts[m] = getEndContact();
+
+    return contacts;
 }
 
 int altName(int id, char *name) {
