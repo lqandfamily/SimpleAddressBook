@@ -150,12 +150,21 @@ int del(int id) {
         //TODO id不存在时的处理
         return ID_NOT_EXIST;
     }
-    //处理到结束ID
-    free(contactArr[id]);
-    contactArr[id] = NULL;
+
+    ContactInfo *delContact = contactArr[id];
+
     for (i = id; i <= contactNum; i++) {
+        //重置id
+        contactArr[i+1]->id = i ;
+
         contactArr[i] = contactArr[i + 1];
     }
+
+    contactArr[i - 1]->id = END_ID_CODE;
+
+    //处理到结束ID
+    free(delContact);
+
     return SUCCESS;
 }
 

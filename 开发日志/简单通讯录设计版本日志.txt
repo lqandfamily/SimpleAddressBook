@@ -17,8 +17,8 @@ Version-0.3
 联合调试
 DOS版菜单系统
 
-*Version-0.4
-GUI版系统
+Version-0.4
+数据加密实现
 
-
-2.菜单实现
+*Version-0.5
+GUI菜单
